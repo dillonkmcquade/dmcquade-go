@@ -1,0 +1,60 @@
+[
+  {
+    "id": 0,
+    "title": "Marketsim",
+    "sections": [
+      {
+        "title": "Project goal",
+        "text": "The goal of this project was to create a personal investing platform.\n I wanted to make sure that at the minimum, users could buy and sell stocks, track their portfolio, and ensure that prices were dynamic.\n Using real market data made this last part easy and quickly allowed me to implement some simple algorithms that would calculate portfolio value based on the purchase price and the current price at any time.",
+        "image": "./stockDetails.png"
+      },
+      {
+        "title": "Research up to 21,000 publicly traded stocks",
+        "text": "In order to search all of these different stocks, I batch imported all of the ticker symbols and associated company names on the US market into my own MongoDB atlas database in order to allow autocomplete searching using a Mongo search index.\n I used the finnhub.io REST API to collect real-time quotes and historical data in order to display prices and visuals and the polygon.io REST API to display news articles related to each stock.",
+        "image": "./research.png"
+      },
+      {
+        "title": "Managing the data",
+        "text": "It can be difficult to always display up-to-date data when that data comes from an external API, therefore I took some extra measures to reduce the need for refetching quotes all the time.\n I chose to use Redis to cache quotes, candle-stick graph data, search results, and news data. I was able to set expiration times on these objects in order to keep data from becoming stale(60s for quotes, 3m for candles).\n Calculating total value involved knowing the current price of every stock in your portfolio, and this could get costly the larger the portfolio grows.\n Having the ability to store prices locally greatly reduced the number of fetch calls to finnhub.",
+        "image": "./dashboard.png"
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "title": "Wearables",
+    "sections": [
+      {
+        "title": "Project Goal",
+        "text": "The goal was to create a modern e-commerce website that focused on wearable technology. This was one of the required group projects I completed during my Full Stack program at Concordia University.",
+        "image": "./wearables_home.png"
+      },
+      {
+        "title": "Project Management",
+        "text": "The most valuable lessons learned from this project were in teamwork and project management. We learned a lot about git and GitHub while working on this project. For most of the team, we had limited experience creating branches, making pull requests, or resolving merge conflicts.\n We used Trello to plan the project before coding in order to defined what features we would develop and how to share the work. \n We created our own discord server for communicating asynchronously and used Zoom during working hours for daily team standups and getting help from others.",
+        "image": "./wearables_login.png"
+      },
+      {
+        "title": "Techniques learned",
+        "text": "In order to have shopping carts, we had to have user accounts. In order to enable login, we had to authenticate users using our database.\n We encrypted user passwords using Bcrpyt and handled authorization with JWT tokens and a Redis cache.",
+        "image": "./wearables_cart.png"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Asteroid Blaster",
+    "sections": [
+      {
+        "title": "Project Goal",
+        "text": "Originally, this project started out as an exercise in debugging a broken nyan cat game.\n Collisions were never detected and therefore the game never finished.\n I quickly made the game work and added some extra features like shooting the asteroids, lives, a timer, and a modal at the end for displaying the player score.",
+        "image": "./asteroid_blaster.png"
+      },
+      {
+        "title": "Shooting the asteroids",
+        "text": "To shoot the asteroids, I created Bullet class that would get instantiated when the player pressed the up arrow. Upon instantiation, the bullet would move its Y position until the bullet and enemy y positions overlapped and destroyed the falling asteroid.",
+        "image": "./shoot.png"
+      }
+    ]
+  }
+]

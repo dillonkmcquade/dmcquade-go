@@ -1,0 +1,42 @@
+[
+  {
+    "id": 0,
+    "name": "MarketSim",
+    "github": "https://www.github.com/dillonkmcquade/sm_sim",
+    "url": "https://sm-sim.vercel.app",
+    "description": "A stock market simulator reminiscent of a personal trading platform, written using Typescript, React, Express, MongoDB, and Redis. Capstone project for Concordia University Diploma in Full Stack Web Development.",
+    "src": "./static/stockDetails.png",
+    "youtube": "https://youtu.be/VJBgQ__4Mug",
+    "noInfo": true
+  },
+  {
+    "id": 3,
+    "name": "MarketSim V2",
+    "github": "https://www.github.com/dillonkmcquade/sm_sim-v2",
+    "description": "Fork of MarketSim, rewritten with PostgreSQL, containerized with Docker",
+    "src": "./static/stockDetails.png",
+    "url": "",
+    "youtube": "",
+    "noInfo": false
+  },
+  {
+    "id": 1,
+    "name": "Wearables",
+    "github": "https://www.github.com/dillonkmcquade/wearables",
+    "description": "An full stack e-commerce website written in JavaScript, React, Express, and MongoDB. Completed in a group with 4 other contributors.",
+    "src": "./static/wearables_home.png",
+    "url": "",
+    "youtube": "",
+    "noInfo": true
+  },
+  {
+    "id": 2,
+    "name": "Asteroid Blaster",
+    "github": "https://www.github.com/dillonkmcquade/asteroid_blaster",
+    "description": "A cross between tetris and asteroids, written in object oriented JavaScript",
+    "src": "./static/project0.png",
+    "youtube": "",
+    "url": "",
+    "noInfo": true
+  }
+]
