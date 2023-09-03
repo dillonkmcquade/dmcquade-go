@@ -38,10 +38,6 @@ type Project struct {
 }
 
 // load templates into struct
-func (h *App) parseTemplates(path string) {
-	tmpl := template.Must(template.ParseFiles(path))
-	h.tmpl = tmpl
-}
 
 // serve static assets like css, images, JS, etc.
 func (h *App) serveStatic() {
@@ -54,10 +50,50 @@ func (h *App) Get(path string, f http.HandlerFunc) {
 	h.router.Get(path, f)
 }
 
+func (h *App) index(rw http.ResponseWriter, r *http.Request) {
+	b, err := os.ReadFile("internal/data/data.json")
+	if err != nil {
+		h.log.Println(err)
+	}
+	d := Home{
+		Skills: []string{
+			"Python",
+			"Go",
+			"Typescript",
+			"HTML",
+			"CSS",
+			"MongoDB",
+			"Node.js",
+			"Linux",
+			"React",
+			"Docker",
+			"Podman",
+		},
+	}
+	err = json.Unmarshal(b, &d.Projects)
+	if err != nil {
+		h.log.Println(err)
+	}
+	err = h.tmpl.Execute(rw, d)
+	if err != nil {
+		h.log.Println(err)
+	}
+}
+
+func (h *App) notFound(rw http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.New("404").Parse(`<h1 style="text-align: center;">404 Not found</h1>`)
+	if err != nil {
+		h.log.Println(err)
+	}
+	rw.WriteHeader(404)
+	tmpl.Execute(rw, nil)
+}
+
 func main() {
 	l := log.New(os.Stdout, "", log.LstdFlags)
-
+	tmpl := template.Must(template.ParseFiles("web/views/layout.html"))
 	app := App{
+		tmpl:   tmpl,
 		log:    l,
 		router: chi.NewRouter(),
 		server: &http.Server{
@@ -68,55 +104,19 @@ func main() {
 			WriteTimeout: 1 * time.Second,
 		},
 	}
-	app.parseTemplates("web/views/layout.html")
 	app.router.Use(middleware.Logger)
 	app.router.Use(middleware.Recoverer)
 	app.serveStatic()
 
 	// Index
-	app.Get("/", func(rw http.ResponseWriter, r *http.Request) {
-		b, err := os.ReadFile("internal/data/data.json")
-		if err != nil {
-			app.log.Println(err)
-		}
-		d := Home{
-			Skills: []string{
-				"Python",
-				"Go",
-				"Typescript",
-				"HTML",
-				"CSS",
-				"MongoDB",
-				"Node.js",
-				"Linux",
-				"React",
-				"Docker",
-				"Podman",
-			},
-		}
-		err = json.Unmarshal(b, &d.Projects)
-		if err != nil {
-			app.log.Println(err)
-		}
-		err = app.tmpl.Execute(rw, d)
-		if err != nil {
-			app.log.Println(err)
-		}
-	})
+	app.Get("/", app.index)
 
 	// Catch 404
-	app.router.NotFound(func(rw http.ResponseWriter, r *http.Request) {
-		tmpl, err := template.New("404").Parse(`<h1 style="text-align: center;">404 Not found</h1>`)
-		if err != nil {
-			app.log.Println(err)
-		}
-		rw.WriteHeader(404)
-		tmpl.Execute(rw, nil)
-	})
+	app.router.NotFound(app.notFound)
 
+	// load router into custom server struct
 	app.server.Handler = app.router
 
-	// server opts
 	// non blocking server
 	go func() {
 		app.log.Printf("Listening on port %s\n", app.server.Addr)
@@ -131,7 +131,7 @@ func main() {
 	sigChan := make(chan os.Signal)
 	signal.Notify(sigChan, os.Interrupt)
 	signal.Notify(sigChan, os.Kill)
-	l.Printf("Received %s, commencing graceful shutdown", <-sigChan)
+	app.log.Printf("Received %s, commencing graceful shutdown", <-sigChan)
 
 	// graceful shutdown
 	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
