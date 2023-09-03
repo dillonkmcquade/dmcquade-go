@@ -8,10 +8,6 @@
       content="Dillon McQuade | Full-stack web developer from Montreal, Qc"
     />
     <link rel="icon" type="image/png" href="/static/favicon.ico" />
-    <link href="/static/projects.css" rel="stylesheet" />
-    <link href="/static/reset.css" rel="stylesheet" />
-    <link href="/static/header.css" rel="stylesheet" />
-    <link href="/static/footer.css" rel="stylesheet" />
     <link href="/static/styles.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,115 +19,130 @@
       href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
       rel="stylesheet"
     />
-
     <title>Dillon McQuade</title>
   </head>
+
   <body>
-    {{ template "Header"}} {{ template "home" .}} {{ template "Footer"}}
-  </body>
-</html>
-
-{{ define "home"}}
-<main class="home-wrapper">
-  <div class="hero"></div>
-  <div class="head">
-    <div class="avatar">
-      <img
-        class="headshot"
-        src="/static/black-and-white-headshot.jpg"
-        alt="picture of me"
-      />
-    </div>
-    <div class="about-container">
-      <div>
-        <h1 class="name">Dillon McQuade</h1>
+    <!-- Header -->
+    <header class="header-wrapper">
+      <div class="header-inner-container">
+        <a href="/" class="logo">
+          <h1 styles="font-family: inherit">Dillon McQuade</h1>
+        </a>
       </div>
+    </header>
 
-      <h1 class="title">About me</h1>
-      <p class="about">
-        I'm a Full Stack Developer, life-long learner, adventurer, husband, and
-        lawn nerd. I'm intrigued by software and especially developer tools and
-        command-line applications.
-      </p>
-      <p class="about">
-        My interests in software are vast and I'm determined to continue to
-        broaden my horizons in this field. I'm currently looking for a new role
-        to apply the knowledge I've gained and expand my skill-set.
-      </p>
-    </div>
-  </div>
-  <hr class="rule" />
-  <h1 class="name">Projects</h1>
-  {{ template "Projects" .Projects}}
-  <hr class="rule" />
-  <h1 class="name">Skills</h1>
-  {{ template "Skills" .Skills}}
-</main>
-{{ end }} {{ define "Projects"}}
-<div class="projects">
-  {{range .}}
-  <section class="project-wrapper">
-    <div class="image-container">
-      <img src="{{ .Src }}" alt="project thumbnail" />
-    </div>
-    <div class="title-icons">
-      <div class="project-name">
-        {{ .Name}} {{ if .Url }}
-        <span styles="font-size: 1rem;">
-          <a href="{{ .Url }}">Live</a>
-        </span>
+    <!-- Content -->
+    <main class="home-wrapper">
+      <div class="hero"></div>
+      <div class="head">
+        <div class="avatar">
+          <img
+            class="headshot"
+            src="/static/black-and-white-headshot.jpg"
+            alt="picture of me"
+          />
+        </div>
+        <div class="about-container">
+          <div>
+            <h1 class="name">Dillon McQuade</h1>
+            <h1 class="title" id="typewriter"></h1>
+          </div>
+
+          <h1 class="title">About me</h1>
+          <p class="about">
+            I'm a Full Stack Developer, life-long learner, adventurer, husband,
+            and lawn nerd. I'm intrigued by software and especially developer
+            tools and command-line applications.
+          </p>
+          <p class="about">
+            My interests in software are vast and I'm determined to continue to
+            broaden my horizons in this field. I'm currently looking for a new
+            role to apply the knowledge I've gained and expand my skill-set.
+          </p>
+        </div>
+      </div>
+      <hr class="rule" />
+      <h1 class="name">Projects</h1>
+
+      <!-- Projects -->
+      <div class="projects">
+        {{range .Projects}}
+        <section class="project-wrapper">
+          <div class="image-container">
+            <img src="{{ .Src }}" alt="project thumbnail" />
+          </div>
+          <div class="title-icons">
+            <div class="project-name">
+              {{ .Name}} {{ if .Url }}
+              <span styles="font-size: 1rem;">
+                <a href="{{ .Url }}">Live</a>
+              </span>
+              {{end}}
+            </div>
+          </div>
+          <hr />
+          <div class="content">
+            <p class="description">{{ .Description}}</p>
+            <div class="icons">
+              <div>
+                <a
+                  href="{{ .Github }}"
+                  alt="github link"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                </a>
+                {{ if .Youtube }}
+                <a
+                  href="{{ .Youtube }}"
+                  alt="youtube link"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <BsYoutube size="24px" styles="margin: 0 .5rem" />
+                </a>
+                {{ end}}
+              </div>
+              {{ if .NoInfo }}
+              <a class="learn-more" href="/project/{{ .Id }}" }>Learn more</a>
+              {{ end}}
+            </div>
+          </div>
+        </section>
         {{end}}
       </div>
-    </div>
-    <hr />
-    <div class="content">
-      <p class="description">{{ .Description}}</p>
-      <div class="icons">
-        <div>
-          <a
-            href="{{ .Github }}"
-            alt="github link"
-            rel="noreferrer"
-            target="_blank"
-          >
-          </a>
-          {{ if .Youtube }}
-          <a
-            href="{{ .Youtube }}"
-            alt="youtube link"
-            rel="noreferrer"
-            target="_blank"
-          >
-            <BsYoutube size="24px" styles="margin: 0 .5rem" />
-          </a>
-          {{ end}}
-        </div>
-        {{ if .NoInfo }}
-        <a class="learn-more" href="/project/{{ .Id }}" }>Learn more</a>
-        {{ end}}
-      </div>
-    </div>
-  </section>
-  {{end}}
-</div>
-{{end }} {{define "Skills"}}
-<div class="skills">
-  {{range .}}
-  <p class="skill">{{ . }}</p>
-  {{end}}
-</div>
-{{end}} {{ define "Header" }}
-<header class="header-wrapper">
-  <div class="header-inner-container">
-    <a href="/" class="logo">
-      <h1 styles="font-family: inherit">Dillon McQuade</h1>
-    </a>
-  </div>
-</header>
-{{ end}} {{ define "Footer" }}
-<footer class="footer-wrapper">
-  <h1 class="title">Get in touch with me</h1>
-  <div class="icons">icons</div>
-</footer>
+      <hr class="rule" />
 
-{{end}}
+      <!-- Skills -->
+      <h1 class="name">Skills</h1>
+      <div class="skills">
+        {{range .Skills}}
+        <p class="skill">{{ . }}</p>
+        {{end}}
+      </div>
+      <footer class="footer-wrapper">
+        <h1 class="title">Get in touch with me</h1>
+
+        <!-- Need to be implemented -->
+        <div class="icons">icons</div>
+      </footer>
+    </main>
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+    <script type="text/javascript">
+      const target = document.getElementById("typewriter");
+      const typewriter = new Typewriter(target, {
+        strings: [
+          "Developer",
+          "Husband",
+          "Adventurer",
+          "Life-long learner",
+          "Lawn nerd",
+        ],
+        loop: true,
+        autoStart: true,
+      });
+      typewriter.start();
+    </script>
+  </body>
+</html>

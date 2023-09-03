@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -19,6 +18,7 @@ type App struct {
 	tmpl   *template.Template
 	router *chi.Mux
 	log    *log.Logger
+	server *http.Server
 }
 
 type Home struct {
@@ -43,7 +43,7 @@ func (h *App) parseTemplates(path string) {
 	h.tmpl = tmpl
 }
 
-// serve static assets like css, images, etc.
+// serve static assets like css, images, JS, etc.
 func (h *App) serveStatic() {
 	fs := http.FileServer(http.Dir("web/static/"))
 	h.router.Handle("/static/*", http.StripPrefix("/static/", fs))
@@ -57,10 +57,18 @@ func (h *App) Get(path string, f http.HandlerFunc) {
 func main() {
 	l := log.New(os.Stdout, "", log.LstdFlags)
 
-	app := App{}
-	app.log = l
+	app := App{
+		log:    l,
+		router: chi.NewRouter(),
+		server: &http.Server{
+			Addr:         ":3001",
+			ErrorLog:     l,
+			IdleTimeout:  120 * time.Second,
+			ReadTimeout:  1 * time.Second,
+			WriteTimeout: 1 * time.Second,
+		},
+	}
 	app.parseTemplates("web/views/layout.html")
-	app.router = chi.NewRouter()
 	app.router.Use(middleware.Logger)
 	app.router.Use(middleware.Recoverer)
 	app.serveStatic()
@@ -73,15 +81,14 @@ func main() {
 		}
 		d := Home{
 			Skills: []string{
-				"JavaScript",
+				"Python",
+				"Go",
 				"Typescript",
 				"HTML",
 				"CSS",
-				"Express.js",
 				"MongoDB",
 				"Node.js",
-				"styled-components",
-				"linux",
+				"Linux",
 				"React",
 				"Docker",
 				"Podman",
@@ -93,7 +100,7 @@ func main() {
 		}
 		err = app.tmpl.Execute(rw, d)
 		if err != nil {
-			fmt.Println(err)
+			app.log.Println(err)
 		}
 	})
 
@@ -101,27 +108,20 @@ func main() {
 	app.router.NotFound(func(rw http.ResponseWriter, r *http.Request) {
 		tmpl, err := template.New("404").Parse(`<h1 style="text-align: center;">404 Not found</h1>`)
 		if err != nil {
-			fmt.Println(err)
+			app.log.Println(err)
 		}
 		rw.WriteHeader(404)
-		tmpl.Execute(rw, "404")
+		tmpl.Execute(rw, nil)
 	})
 
-	// server opts
-	server := http.Server{
-		Addr:         ":3001",
-		Handler:      app.router,
-		ErrorLog:     l,
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
-	}
+	app.server.Handler = app.router
 
+	// server opts
 	// non blocking server
 	go func() {
-		app.log.Printf("Listening on port %s\n", server.Addr)
+		app.log.Printf("Listening on port %s\n", app.server.Addr)
 
-		err := server.ListenAndServe()
+		err := app.server.ListenAndServe()
 		if err != nil {
 			app.log.Fatal(err)
 		}
@@ -137,7 +137,7 @@ func main() {
 	tc, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
-	if err := server.Shutdown(tc); err != nil {
+	if err := app.server.Shutdown(tc); err != nil {
 		app.log.Println(err)
 	}
 }
