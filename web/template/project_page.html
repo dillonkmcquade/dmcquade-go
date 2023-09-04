@@ -1,0 +1,16 @@
+{{template "base" .}} {{define "content"}}
+<div class="project-details-wrapper">
+  <h1 class="title">{{ .Title }}</h1>
+  {{ range .Sections}}
+  <section class="project-section">
+    <div class="flex">
+      <img class="project-details-image" src="{{.Image}}" />
+      <div class="inner">
+        <h1 class="project-section-title">{{ .Title }}</h1>
+        <p class="project-section-text">{{ .Text }}</p>
+      </div>
+    </div>
+  </section>
+  {{end}}
+</div>
+{{end}}

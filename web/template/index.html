@@ -1,0 +1,68 @@
+{{define "base"}}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Dillon McQuade | Full-stack web developer from Montreal, Qc"
+    />
+    <link rel="icon" type="image/png" href="/static/favicon.ico" />
+    <link href="/static/css/styles.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
+    <script
+      src="https://unpkg.com/htmx.org@1.9.5"
+      integrity="sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO"
+      crossorigin="anonymous"
+    ></script>
+    <title>Dillon McQuade</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="header-wrapper">
+      <div class="header-inner-container">
+        <a aria-label="Go to home page" href="/" class="logo">
+          <h1 styles="font-family: inherit">Dillon McQuade</h1>
+        </a>
+      </div>
+    </header>
+    {{ template "content" .}}
+    <footer class="footer-wrapper">
+      <h1 class="title">Get in touch with me</h1>
+
+      <!-- Need to be implemented -->
+      <div class="icons">icons</div>
+    </footer>
+    <script type="text/javascript">
+      function showTypewriter() {
+        const target = document.getElementById("typewriter");
+        const typewriter = new Typewriter(target, {
+          strings: [
+            "Developer",
+            "Husband",
+            "Adventurer",
+            "Life-long learner",
+            "Lawn nerd",
+          ],
+          loop: true,
+          autoStart: true,
+        });
+        typewriter.start();
+      }
+      showTypewriter();
+    </script>
+  </body>
+</html>
+{{end}}

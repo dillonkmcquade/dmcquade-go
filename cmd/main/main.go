@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"text/template"
 	"time"
 
@@ -35,6 +36,18 @@ type Project struct {
 	Youtube     string `json:"youtube"`
 	Id          int    `json:"id"`
 	NoInfo      bool   `json:"noInfo"`
+}
+
+type ProjectDetailSection struct {
+	Title string `json:"title"`
+	Text  string `json:"text"`
+	Image string `json:"image"`
+}
+
+type ProjectDetails struct {
+	Id       int                    `json:"id"`
+	Title    string                 `json:"title"`
+	Sections []ProjectDetailSection `json:"sections"`
 }
 
 // load templates into struct
@@ -67,13 +80,14 @@ func (h *App) index(rw http.ResponseWriter, r *http.Request) {
 			"Linux",
 			"React",
 			"Docker",
-			"Podman",
+			"PostgreSQL",
 		},
 	}
 	err = json.Unmarshal(b, &d.Projects)
 	if err != nil {
 		h.log.Println(err)
 	}
+	h.tmpl = template.Must(template.ParseFiles("web/template/home.html", "web/template/index.html"))
 	err = h.tmpl.Execute(rw, d)
 	if err != nil {
 		h.log.Println(err)
@@ -89,11 +103,49 @@ func (h *App) notFound(rw http.ResponseWriter, r *http.Request) {
 	tmpl.Execute(rw, nil)
 }
 
+func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	if id == "" {
+		http.Error(rw, "Missing url parameters", http.StatusBadRequest)
+		h.log.Println("Missing url parameters")
+		return
+	}
+
+	b, err := os.ReadFile("internal/data/projectDetails.json")
+	if err != nil {
+		http.Error(rw, "Unable to retrieve project details", http.StatusNotFound)
+		h.log.Println(err)
+		return
+	}
+
+	d := [3]ProjectDetails{}
+
+	err = json.Unmarshal(b, &d)
+	if err != nil {
+		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
+		h.log.Println(err)
+		return
+	}
+
+	idx, err := strconv.Atoi(id)
+	if err != nil {
+		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
+		h.log.Println(err)
+		return
+	}
+
+	h.tmpl = template.Must(template.ParseFiles("web/template/project_page.html", "web/template/index.html"))
+	err = h.tmpl.Execute(rw, d[idx])
+	if err != nil {
+		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
+		h.log.Println(err)
+		return
+	}
+}
+
 func main() {
 	l := log.New(os.Stdout, "", log.LstdFlags)
-	tmpl := template.Must(template.ParseFiles("web/views/layout.html"))
 	app := App{
-		tmpl:   tmpl,
 		log:    l,
 		router: chi.NewRouter(),
 		server: &http.Server{
@@ -106,10 +158,12 @@ func main() {
 	}
 	app.router.Use(middleware.Logger)
 	app.router.Use(middleware.Recoverer)
+	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
 	app.serveStatic()
 
 	// Index
 	app.Get("/", app.index)
+	app.Get("/project/{id}", app.projects)
 
 	// Catch 404
 	app.router.NotFound(app.notFound)

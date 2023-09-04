@@ -5,7 +5,7 @@ tmp_dir = "bin"
 [build]
   args_bin = []
   bin = "./bin/main"
-  cmd = "go build -o ./bin/main ./cmd/main/main.go"
+  cmd = "esbuild --bundle --minify web/static/css/main.css --outfile=web/static/css/styles.css --loader:.jpg=dataurl && go build -o ./bin/main ./cmd/main/main.go"
   delay = 1
   exclude_dir = ["assets", "tmp", "vendor", "testdata"]
   exclude_file = []
@@ -40,5 +40,5 @@ tmp_dir = "bin"
   clean_on_exit = false
 
 [screen]
-  clear_on_rebuild = false
+  clear_on_rebuild = true
   keep_scroll = true
