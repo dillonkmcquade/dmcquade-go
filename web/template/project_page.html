@@ -1,21 +1,31 @@
 {{define "content"}}
+<style>
+  div.project-details-image {
+    background-image: url("{{.Image}}");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 500px;
+    width: 100%;
+  }
+</style>
 <main class="project-details-wrapper">
-  <h1 class="title">{{ .Title }}</h1>
+  <h1 class="project-page-title">{{ .Title }}</h1>
+  <div
+    class="project-details-image"
+    alt="Photo of the stock detail page of Marketsim"
+  ></div>
+
   <!-- Icons  -->
-  {{ range .Sections}}
   <section class="project-section">
     <div class="flex">
-      <img
-        class="project-details-image"
-        src="{{.Image}}"
-        alt="Photo of the stock detail page of Marketsim"
-      />
       <div class="inner">
+        {{ range .Sections}}
         <h1 class="project-section-title">{{ .Title }}</h1>
         <p class="project-section-text">{{ .Text }}</p>
+        {{end}}
       </div>
     </div>
   </section>
-  {{end}}
 </main>
 {{end}}

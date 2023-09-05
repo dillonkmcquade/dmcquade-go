@@ -41,12 +41,12 @@ type Project struct {
 type ProjectDetailSection struct {
 	Title string `json:"title"`
 	Text  string `json:"text"`
-	Image string `json:"image"`
 }
 
 type ProjectDetails struct {
 	Id       int                    `json:"id"`
 	Title    string                 `json:"title"`
+	Image    string                 `json:"image"`
 	Sections []ProjectDetailSection `json:"sections"`
 }
 
