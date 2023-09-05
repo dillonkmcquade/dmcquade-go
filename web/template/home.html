@@ -2,7 +2,7 @@
 <!-- Content -->
 <main class="home-wrapper">
   <div class="hero"></div>
-  <div class="head">
+  <section class="head">
     <div class="avatar">
       <img
         class="headshot"
@@ -10,7 +10,7 @@
         alt="picture of me"
       />
     </div>
-    <div class="about-container">
+    <section class="about-container">
       <div>
         <h1 class="name">Dillon McQuade</h1>
         <h1 class="title" id="typewriter"></h1>
@@ -27,15 +27,15 @@
         broaden my horizons in this field. I'm currently looking for a new role
         to apply the knowledge I've gained and expand my skill-set.
       </p>
-    </div>
-  </div>
+    </section>
+  </section>
   <hr class="rule" />
   <h1 class="name">Projects</h1>
 
   <!-- Projects -->
-  <div class="projects">
+  <section class="projects">
     {{range .Projects}}
-    <section class="project-wrapper">
+    <article class="project-wrapper">
       <div class="image-container">
         <img src="{{ .Src }}" alt="project thumbnail" />
       </div>
@@ -85,17 +85,17 @@
           {{ end}}
         </div>
       </div>
-    </section>
+    </article>
     {{end}}
-  </div>
+  </section>
   <hr class="rule" />
 
   <!-- Skills -->
   <h1 class="name">Skills</h1>
-  <div class="skills">
+  <section class="skills">
     {{range .Skills}}
     <p class="skill">{{ . }}</p>
     {{end}}
-  </div>
+  </section>
 </main>
 {{ end }}

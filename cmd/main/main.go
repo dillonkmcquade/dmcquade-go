@@ -87,7 +87,7 @@ func (h *App) index(rw http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		h.log.Println(err)
 	}
-	h.tmpl = template.Must(template.ParseFiles("web/template/home.html", "web/template/index.html"))
+	h.tmpl = template.Must(template.ParseFiles("web/template/index.html"))
 	err = h.tmpl.Execute(rw, d)
 	if err != nil {
 		h.log.Println(err)
@@ -134,7 +134,7 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.tmpl = template.Must(template.ParseFiles("web/template/project_page.html", "web/template/index.html"))
+	h.tmpl = template.Must(template.ParseFiles("web/template/index.html", "web/template/project_page.html"))
 	err = h.tmpl.Execute(rw, d[idx])
 	if err != nil {
 		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
@@ -144,7 +144,10 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// create logger
 	l := log.New(os.Stdout, "", log.LstdFlags)
+
+	// Initialize the application
 	app := App{
 		log:    l,
 		router: chi.NewRouter(),
@@ -156,6 +159,8 @@ func main() {
 			WriteTimeout: 1 * time.Second,
 		},
 	}
+
+	// middleware
 	app.router.Use(middleware.Logger)
 	app.router.Use(middleware.Recoverer)
 	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
@@ -163,6 +168,8 @@ func main() {
 
 	// Index
 	app.Get("/", app.index)
+
+	// Project detail page
 	app.Get("/project/{id}", app.projects)
 
 	// Catch 404

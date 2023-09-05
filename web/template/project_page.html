@@ -1,10 +1,15 @@
-{{template "base" .}} {{define "content"}}
-<div class="project-details-wrapper">
+{{define "content"}}
+<main class="project-details-wrapper">
   <h1 class="title">{{ .Title }}</h1>
+  <!-- Icons  -->
   {{ range .Sections}}
   <section class="project-section">
     <div class="flex">
-      <img class="project-details-image" src="{{.Image}}" />
+      <img
+        class="project-details-image"
+        src="{{.Image}}"
+        alt="Photo of the stock detail page of Marketsim"
+      />
       <div class="inner">
         <h1 class="project-section-title">{{ .Title }}</h1>
         <p class="project-section-text">{{ .Text }}</p>
@@ -12,5 +17,5 @@
     </div>
   </section>
   {{end}}
-</div>
+</main>
 {{end}}

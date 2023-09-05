@@ -2,6 +2,7 @@
 @import url("./projects.css");
 @import url("./header.css");
 @import url("./footer.css");
+@import url("./projectDetails.css");
 :root {
   --nord0: #2e3440;
   --nord1: #3b4252;
