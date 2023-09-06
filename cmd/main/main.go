@@ -24,8 +24,8 @@ type App struct {
 }
 
 type Home struct {
-	Projects []Project
-	Skills   []string
+	Projects [4]Project
+	Skills   [11]string
 }
 
 type Project struct {
@@ -70,7 +70,7 @@ func (h *App) index(rw http.ResponseWriter, r *http.Request) {
 		h.log.Println(err)
 	}
 	d := Home{
-		Skills: []string{
+		Skills: [11]string{
 			"Python",
 			"Go",
 			"Typescript",
@@ -153,7 +153,7 @@ func main() {
 		log:    l,
 		router: chi.NewRouter(),
 		server: &http.Server{
-			Addr:         ":3001",
+			Addr:         ":8080",
 			ErrorLog:     l,
 			IdleTimeout:  120 * time.Second,
 			ReadTimeout:  1 * time.Second,
@@ -166,9 +166,7 @@ func main() {
 	app.router.Use(middleware.Recoverer)
 	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
 	app.router.Use(cors.Handler(cors.Options{
-		// AllowedOrigins:   []string{"https://foo.com"}, // Use this to allow specific origin hosts
-		AllowedOrigins: []string{"https://*", "http://*"},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET"},
 		AllowedHeaders:   []string{"Accept", "Content-Type"},
 		AllowCredentials: false,
