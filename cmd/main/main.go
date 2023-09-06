@@ -17,18 +17,6 @@ import (
 	"github.com/unrolled/secure"
 )
 
-type App struct {
-	tmpl   *template.Template
-	router *chi.Mux
-	log    *log.Logger
-	server *http.Server
-}
-
-type Home struct {
-	Projects [4]Project
-	Skills   [11]string
-}
-
 type Project struct {
 	Src         string `json:"src"`
 	Url         string `json:"url"`
@@ -38,6 +26,18 @@ type Project struct {
 	Youtube     string `json:"youtube"`
 	Id          int    `json:"id"`
 	NoInfo      bool   `json:"noInfo"`
+}
+type AppData struct {
+	Projects       [4]Project
+	ProjectDetails [3]ProjectDetails
+	Skills         [11]string
+}
+type App struct {
+	tmpl   *template.Template
+	router *chi.Mux
+	log    *log.Logger
+	server *http.Server
+	data   AppData
 }
 
 type ProjectDetailSection struct {
@@ -60,37 +60,9 @@ func (h *App) serveStatic() {
 	h.router.Handle("/static/*", http.StripPrefix("/static/", fs))
 }
 
-// cleaner wrapper for Get
-func (h *App) Get(path string, f http.HandlerFunc) {
-	h.router.Get(path, f)
-}
-
 func (h *App) index(rw http.ResponseWriter, r *http.Request) {
-	b, err := os.ReadFile("internal/data/data.json")
-	if err != nil {
-		h.log.Println(err)
-	}
-	d := Home{
-		Skills: [11]string{
-			"Python",
-			"Go",
-			"Typescript",
-			"HTML",
-			"CSS",
-			"MongoDB",
-			"Node.js",
-			"Linux",
-			"React",
-			"Docker",
-			"PostgreSQL",
-		},
-	}
-	err = json.Unmarshal(b, &d.Projects)
-	if err != nil {
-		h.log.Println(err)
-	}
 	h.tmpl = template.Must(template.ParseFiles("web/template/index.html"))
-	err = h.tmpl.Execute(rw, d)
+	err := h.tmpl.Execute(rw, h.data)
 	if err != nil {
 		h.log.Println(err)
 	}
@@ -113,22 +85,6 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	b, err := os.ReadFile("internal/data/projectDetails.json")
-	if err != nil {
-		http.Error(rw, "Unable to retrieve project details", http.StatusNotFound)
-		h.log.Println(err)
-		return
-	}
-
-	d := [3]ProjectDetails{}
-
-	err = json.Unmarshal(b, &d)
-	if err != nil {
-		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
-		h.log.Println(err)
-		return
-	}
-
 	idx, err := strconv.Atoi(id)
 	if err != nil {
 		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
@@ -137,7 +93,7 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 	}
 
 	h.tmpl = template.Must(template.ParseFiles("web/template/index.html", "web/template/project_page.html"))
-	err = h.tmpl.Execute(rw, d[idx])
+	err = h.tmpl.Execute(rw, h.data.ProjectDetails[idx])
 	if err != nil {
 		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
 		h.log.Println(err)
@@ -160,6 +116,34 @@ func main() {
 			ReadTimeout:  1 * time.Second,
 			WriteTimeout: 1 * time.Second,
 		},
+		data: AppData{
+			Skills: [11]string{
+				"Python",
+				"Go",
+				"Typescript",
+				"HTML",
+				"CSS",
+				"MongoDB",
+				"Node.js",
+				"Linux",
+				"React",
+				"Docker",
+				"PostgreSQL",
+			},
+		},
+	}
+
+	// load data into struct
+	b, _ := os.ReadFile("internal/data/data.json")
+	err := json.Unmarshal(b, &app.data.Projects)
+	if err != nil {
+		app.log.Fatal(err)
+	}
+
+	b, _ = os.ReadFile("internal/data/projectDetails.json")
+	err = json.Unmarshal(b, &app.data.ProjectDetails)
+	if err != nil {
+		app.log.Fatal(err)
 	}
 
 	secureMiddleware := secure.New(secure.Options{
@@ -188,10 +172,10 @@ func main() {
 	app.serveStatic()
 
 	// Index
-	app.Get("/", app.index)
+	app.router.Get("/", app.index)
 
 	// Project detail page
-	app.Get("/project/{id}", app.projects)
+	app.router.Get("/project/{id}", app.projects)
 
 	// Catch 404
 	app.router.NotFound(app.notFound)
