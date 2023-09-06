@@ -163,7 +163,7 @@ func main() {
 	}
 
 	secureMiddleware := secure.New(secure.Options{
-		ContentSecurityPolicy: "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+		ContentSecurityPolicy: "default-src 'self';base-uri 'self';font-src googleapis.com gstatic.com https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self' https: unpkg.com 'unsafe-inline';script-src-attr 'none';style-src 'self'  https: 'unsafe-inline';upgrade-insecure-requests",
 		ReferrerPolicy:        "no-referrer",
 		STSSeconds:            31536000,
 		STSIncludeSubdomains:  true,
