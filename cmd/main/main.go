@@ -52,8 +52,6 @@ type ProjectDetails struct {
 	Sections []ProjectDetailSection `json:"sections"`
 }
 
-// load templates into struct
-
 // serve static assets like css, images, JS, etc.
 func (h *App) serveStatic() {
 	fs := http.FileServer(http.Dir("web/static/"))
