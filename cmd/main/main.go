@@ -181,9 +181,9 @@ func main() {
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
-	app.router.Use(secureMiddleware.Handler)
 	app.router.Use(middleware.Logger)
 	app.router.Use(middleware.Recoverer)
+	app.router.Use(secureMiddleware.Handler)
 	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
 	app.serveStatic()
 
