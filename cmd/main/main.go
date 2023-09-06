@@ -14,6 +14,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	"github.com/unrolled/secure"
 )
 
 type App struct {
@@ -161,17 +162,29 @@ func main() {
 		},
 	}
 
+	secureMiddleware := secure.New(secure.Options{
+		ContentSecurityPolicy: "default-src 'self';base-uri 'self';font-src 'self' https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'self';script-src-attr 'none';style-src 'self' https: 'unsafe-inline';upgrade-insecure-requests",
+		ReferrerPolicy:        "no-referrer",
+		STSSeconds:            31536000,
+		STSIncludeSubdomains:  true,
+		STSPreload:            true,
+		FrameDeny:             true,
+		ContentTypeNosniff:    true,
+		BrowserXssFilter:      true,
+	})
+
 	// middleware
-	app.router.Use(middleware.Logger)
-	app.router.Use(middleware.Recoverer)
-	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
 	app.router.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
-		AllowedMethods:   []string{"GET"},
+		AllowedMethods:   []string{"GET", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Content-Type"},
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
+	app.router.Use(secureMiddleware.Handler)
+	app.router.Use(middleware.Logger)
+	app.router.Use(middleware.Recoverer)
+	app.router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
 	app.serveStatic()
 
 	// Index
