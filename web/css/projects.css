@@ -37,13 +37,13 @@
   }
 }
 
-.footer.bi {
+/* .footer.bi {
   width: 32px;
   height: 32px;
 }
 .footer.bi:hover {
   fill: gray;
-}
+} */
 
 .description {
   letter-spacing: 0.05em;
@@ -56,12 +56,12 @@
   font-weight: bold;
 }
 
-.icons {
+/* .icons {
   display: flex;
   justify-content: space-between;
   color: black;
   padding: 1rem 0;
-}
+} */
 
 .project-name {
   font-size: 1.6rem;

@@ -8,7 +8,7 @@
       content="Dillon McQuade | Full-stack web developer from Montreal, Qc"
     />
     <link rel="icon" type="image/png" href="/static/favicon.ico" />
-    <link href="/static/styles.css" rel="stylesheet" />
+    <link href="/static/output.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -33,38 +33,59 @@
 
   <body>
     <!-- Header -->
-    <header class="header-wrapper">
-      <div class="header-inner-container">
-        <a aria-label="Go to home page" href="/" class="logo" hx-boost="true">
-          <h1 styles="font-family: inherit">Dillon McQuade</h1>
+    <header class="w-screen mx-auto my-0 py-4 px-0 h-14 bg-header">
+      <div
+        class="flex flex-row items-center justify-between w-full max-w-[1400px] h-full py-0 px-4 my-0 mx-auto"
+      >
+        <a
+          aria-label="Go to home page"
+          href="/"
+          class="no-underline font-fugaz border-2 border-white border-solid p-2 hover:opacity-80 text-white"
+          hx-boost="true"
+        >
+          <h1>Dillon McQuade</h1>
         </a>
       </div>
     </header>
     <!-- Content -->
     {{block "content" .}}
-    <main class="home-wrapper">
-      <div class="hero"></div>
-      <section class="head">
-        <div class="avatar">
+    <main
+      class="flex flex-col w-[95vw] h-full md:max-w-[1400px] text-xs mt-4 mr-auto mb-0 ml-auto items-center"
+    >
+      <!-- Hero -->
+      <div
+        class="absolute w-screen h-hero_mobile md:h-hero bg-hero bg-center bg-cover -z-10 -top-[100px]"
+      ></div>
+
+      <!-- About Section -->
+      <section
+        class="flex w-full flex-col md:flex-row md:min-h-[40vh] items-center justify-evenly bg-head text-nord4"
+      >
+        <div class="flex flex-col items-center">
           <img
-            class="headshot"
+            class="h-72 sm:h-[300px] my-4 mx-0 rounded"
             src="/static/images/black-and-white-headshot.jpg"
             alt="picture of me"
           />
         </div>
-        <section class="about-container">
+        <section class="text-center w-full md:w-1/3 max-w-max md:max-w-1/3">
           <div>
-            <h1 class="name">Dillon McQuade</h1>
-            <h1 class="title" id="typewriter"></h1>
+            <h1 class="text-2xl text-nord8 my-5 mx-0 font-bold">
+              Dillon McQuade
+            </h1>
+            <h1
+              class="text-nord8 my-5 mx-0 text-xl font-bold"
+              id="typewriter"
+            ></h1>
           </div>
 
-          <h1 class="title">About me</h1>
-          <p class="about">
+          <h1 class="text-nord8 my-5 mx-0 text-xl font-bold">About me</h1>
+          <p class="p-4 text-lg w-full lg:max-w-5xl indent-4">
             I'm a life-long learner, adventurer, husband, and lawn nerd. I'm
             intrigued by software and especially developer tools and
             command-line applications.
           </p>
-          <p class="about">
+          <p class="p-4 text-lg w-full lg:max-w-5xl indent-4">
             I am motivated by and enjoy backend development. I have used
             Typescript for most of my projects, and right now i'm learning more
             about the Go programming language. This site was written in Go using
@@ -72,11 +93,12 @@
           </p>
         </section>
       </section>
-      <hr class="rule" />
-      <h1 class="name">Projects</h1>
+
+      <hr class="w-1/3 text-nord7 mt-16 mx-auto mb-8" />
 
       <!-- Projects -->
-      <section class="projects">
+      <h1 class="text-2xl text-nord8 font-bold my-5 mx-0">Projects</h1>
+      <section class="flex flex-wrap justify-center w-full my-0 mx-auto">
         {{range .Projects}}
         <article class="project-wrapper">
           <div class="image-container">
@@ -158,25 +180,30 @@
         </article>
         {{end}}
       </section>
-      <hr class="rule" />
+      <hr class="w-1/3 text-nord7 mt-16 mx-auto mb-8" />
 
       <!-- Skills -->
-      <h1 class="name">Skills</h1>
-      <section class="skills">
+      <h1 class="text-2xl text-nord8 my-5 mx-0 font-bold">Skills</h1>
+      <section class="grid my-0 mx-auto w-full grid-cols-3 grid-rows-4">
         {{range .Skills}}
-        <p class="skill">{{ . }}</p>
+        <p class="text-center text-base mt-5 font-semibold">{{ . }}</p>
         {{end}}
       </section>
     </main>
     {{end}}
-    <footer class="footer-wrapper">
-      <h1 class="title">Get in touch with me</h1>
 
-      <!-- Need to be implemented -->
-      <div class="icons">
+    <!-- Footer  -->
+    <footer
+      class="relative flex flex-col items-center pb-4 border-solid border-t-2 border-t-black top-14"
+    >
+      <h1 class="text-2xl text-nord8 my-5 mx-0 font-bold">
+        Get in touch with me
+      </h1>
+
+      <div class="flex text-black justify-between py-4 px-0">
         <a
           href="https://github.com/dillonkmcquade"
-          class="link"
+          class="no-underline px-2"
           aria-label="View the github repository"
           alt="github link"
           rel="noreferrer"
@@ -187,7 +214,7 @@
             width="64"
             height="64"
             fill="black"
-            class="footer bi bi-github"
+            class="hover:fill-gray-400 bi bi-github"
             viewBox="0 0 16 16"
           >
             <path
@@ -197,7 +224,7 @@
         </a>
         <a
           href="mailto:dillonkmcquade@gmail.com"
-          class="link"
+          class="no-underline px-2"
           aria-label="Email me"
           alt="Email me"
           rel="noreferrer"
@@ -208,7 +235,7 @@
             width="64"
             height="64"
             fill="black"
-            class="footer bi bi-envelope-fill"
+            class="hover:fill-gray-400 bi bi-envelope-fill"
             viewBox="0 0 16 16"
           >
             <path
@@ -218,7 +245,7 @@
         </a>
         <a
           href="https://linkedin.com/in/dillonkmcquade"
-          class="link"
+          class="no-underline px-2"
           aria-label="Linkedin"
           rel="noreferrer"
           target="_blank"
@@ -228,7 +255,7 @@
             width="60"
             height="60"
             fill="black"
-            class="footer bi bi-linkedin"
+            class="hover:fill-gray-400 bi bi-linkedin"
             viewBox="0 0 16 16"
           >
             <path

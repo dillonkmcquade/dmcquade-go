@@ -1,4 +1,4 @@
-module github.com/dillonkmcquade/portfolio-go
+module github.com/dillonkmcquade/dmcquade-go
 
 go 1.21
 
