@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "dmcquade.dev",
   "version": "1.0.0",
   "description": "",
   "main": "template/index.html",
@@ -7,7 +7,7 @@
     "build": "tailwindcss -i css/input.css -o static/output.css "
   },
   "keywords": [],
-  "author": "",
+  "author": "Dillon Mcquade",
   "license": "ISC",
   "dependencies": {
     "tailwindcss": "^3.3.3"
