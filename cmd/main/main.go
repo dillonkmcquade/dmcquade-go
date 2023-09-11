@@ -30,7 +30,7 @@ type Project struct {
 type AppData struct {
 	Projects       [4]Project
 	ProjectDetails [3]ProjectDetails
-	Skills         [11]string
+	Skills         [10]string
 }
 type App struct {
 	tmpl   *template.Template
@@ -120,8 +120,7 @@ func main() {
 		data: AppData{
 			// ProjectDetails
 			// Projects
-			Skills: [11]string{
-				"Python",
+			Skills: [10]string{
 				"Go",
 				"Typescript",
 				"HTML",
