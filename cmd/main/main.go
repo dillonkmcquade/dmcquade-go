@@ -72,7 +72,10 @@ func (h *App) notFound(rw http.ResponseWriter, r *http.Request) {
 		h.log.Println(err)
 	}
 	rw.WriteHeader(404)
-	tmpl.Execute(rw, nil)
+	err = tmpl.Execute(rw, nil)
+	if err != nil {
+		h.log.Println(err)
+	}
 }
 
 func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
@@ -115,6 +118,8 @@ func main() {
 			WriteTimeout: 1 * time.Second,
 		},
 		data: AppData{
+			// ProjectDetails
+			// Projects
 			Skills: [11]string{
 				"Python",
 				"Go",
@@ -132,16 +137,16 @@ func main() {
 	}
 
 	// load data into struct
-	b, _ := os.ReadFile("internal/data/data.json")
-	err := json.Unmarshal(b, &app.data.Projects)
+	b, err := os.ReadFile("internal/data/data.json")
+	err = json.Unmarshal(b, &app.data.Projects)
 	if err != nil {
-		app.log.Fatal(err)
+		app.log.Fatalf("Failed to read data from internal/data/data.json: %s ", err)
 	}
 
-	b, _ = os.ReadFile("internal/data/projectDetails.json")
+	b, err = os.ReadFile("internal/data/projectDetails.json")
 	err = json.Unmarshal(b, &app.data.ProjectDetails)
 	if err != nil {
-		app.log.Fatal(err)
+		app.log.Fatalf("Failed to read data from internal/data/projectDetails.json: %s ", err)
 	}
 
 	secureMiddleware := secure.New(secure.Options{
@@ -184,10 +189,9 @@ func main() {
 	// non blocking server
 	go func() {
 		app.log.Printf("Listening on port %s\n", app.server.Addr)
-
 		err := app.server.ListenAndServe()
 		if err != nil {
-			app.log.Fatal(err)
+			app.log.Fatalf("An error occurred while starting the server: %s", err)
 		}
 	}()
 
