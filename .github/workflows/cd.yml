@@ -1,6 +1,6 @@
 name: Fly Deploy
 on:
-  merge:
+  push:
     branches:
       - main
 jobs:
