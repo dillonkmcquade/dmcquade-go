@@ -2,3 +2,5 @@
 **/bin
 fly.toml
 web/node_modules
+web/static/js/index.js
+web/static/output.css

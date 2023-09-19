@@ -1,0 +1,45 @@
+{{ define "base" }}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Dillon McQuade | Full-stack web developer from Montreal, Qc"
+    />
+    <link rel="icon" type="image/png" href="/static/favicon.ico" />
+    <link href="/static/output.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/static/js/htmx.min.js" nonce="dmcquade-go"></script>
+    <title>Dillon McQuade</title>
+  </head>
+
+  <body>
+    <!-- Header -->
+    <header class="mx-auto my-0 h-14 w-screen bg-header px-0 py-4">
+      <div
+        class="mx-auto my-0 flex h-full w-full max-w-[1400px] flex-row items-center justify-between px-4 py-0"
+      >
+        <a
+          aria-label="Go to home page"
+          href="/"
+          class="border-2 border-solid border-white p-2 font-fugaz text-white no-underline hover:opacity-80"
+          hx-boost="true"
+        >
+          <h1>Dillon McQuade</h1>
+        </a>
+      </div>
+    </header>
+  </body>
+</html>
+{{end}}

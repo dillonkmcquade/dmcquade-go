@@ -1,7 +1,7 @@
-{{define "content"}}
+{{template "base"}}
 <style>
   div.project-details-image {
-    background-image: url("{{.Image}}");
+    background-image: url("{{ .Image }}");
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;
@@ -39,4 +39,4 @@
     </div>
   </section>
 </main>
-{{end}}
+{{template "footer"}}

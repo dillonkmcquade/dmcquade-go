@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
-	"text/template"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -59,8 +59,7 @@ func (h *App) serveStatic() {
 }
 
 func (h *App) index(rw http.ResponseWriter, r *http.Request) {
-	h.tmpl = template.Must(template.ParseFiles("web/template/index.html"))
-	err := h.tmpl.Execute(rw, h.data)
+	err := h.tmpl.ExecuteTemplate(rw, "home.html", h.data)
 	if err != nil {
 		h.log.Println(err)
 	}
@@ -93,8 +92,7 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	h.tmpl = template.Must(template.ParseFiles("web/template/index.html", "web/template/project_page.html"))
-	err = h.tmpl.Execute(rw, h.data.ProjectDetails[idx])
+	err = h.tmpl.ExecuteTemplate(rw, "project_page.html", h.data.ProjectDetails[idx])
 	if err != nil {
 		http.Error(rw, "Internal Server Error", http.StatusInternalServerError)
 		h.log.Println(err)
@@ -105,9 +103,11 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 func main() {
 	// create logger
 	l := log.New(os.Stdout, "", log.LstdFlags)
+	tmpl := template.Must(template.ParseGlob("web/template/*.html"))
 
 	// Initialize the application
 	app := App{
+		tmpl:   tmpl,
 		log:    l,
 		router: chi.NewRouter(),
 		server: &http.Server{
