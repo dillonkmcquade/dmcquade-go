@@ -9,6 +9,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"syscall"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -137,26 +138,41 @@ func main() {
 
 	// load data into struct
 	b, err := os.ReadFile("internal/data/data.json")
-	err = json.Unmarshal(b, &app.data.Projects)
 	if err != nil {
 		app.log.Fatalf("Failed to read data from internal/data/data.json: %s ", err)
 	}
+	err = json.Unmarshal(b, &app.data.Projects)
+	if err != nil {
+		app.log.Fatalf("Failed to unmarshal JSON data from internal/data/data.json: %s ", err)
+	}
 
 	b, err = os.ReadFile("internal/data/projectDetails.json")
-	err = json.Unmarshal(b, &app.data.ProjectDetails)
 	if err != nil {
 		app.log.Fatalf("Failed to read data from internal/data/projectDetails.json: %s ", err)
 	}
+	err = json.Unmarshal(b, &app.data.ProjectDetails)
+	if err != nil {
+		app.log.Fatalf("Failed to unmarshal data from internal/data/projectDetails.json: %s ", err)
+	}
 
 	secureMiddleware := secure.New(secure.Options{
-		ContentSecurityPolicy: "default-src 'self' data:;base-uri 'self';font-src googleapis.com gstatic.com https: data:;form-action 'self';frame-ancestors 'self';img-src 'self' data:;object-src 'none';script-src 'strict-dynamic' 'nonce-dmcquade-go' 'sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO';script-src-attr 'none';style-src 'self'  https: 'unsafe-inline';upgrade-insecure-requests",
-		ReferrerPolicy:        "no-referrer",
-		STSSeconds:            31536000,
-		STSIncludeSubdomains:  true,
-		STSPreload:            true,
-		FrameDeny:             true,
-		ContentTypeNosniff:    true,
-		BrowserXssFilter:      true,
+		ContentSecurityPolicy: `
+            default-src 'self' data:;
+            base-uri 'self';
+            font-src googleapis.com gstatic.com https: data:;
+            form-action 'self';frame-ancestors 'self';
+            img-src 'self' data:;object-src 'none';
+            script-src 'strict-dynamic' 'nonce-dmcquade-go' 'sha384-xcuj3WpfgjlKF+FXhSQFQ0ZNr39ln+hwjN3npfM9VBnUskLolQAcN80McRIVOPuO';
+            script-src-attr 'none';
+            style-src 'self' https: 'unsafe-inline';
+            upgrade-insecure-requests`,
+		ReferrerPolicy:       "no-referrer",
+		STSSeconds:           31536000,
+		STSIncludeSubdomains: true,
+		STSPreload:           true,
+		FrameDeny:            true,
+		ContentTypeNosniff:   true,
+		BrowserXssFilter:     true,
 	})
 
 	// middleware
@@ -189,15 +205,14 @@ func main() {
 	go func() {
 		app.log.Printf("Listening on port %s\n", app.server.Addr)
 		err := app.server.ListenAndServe()
-		if err != nil {
-			app.log.Fatalf("An error occurred while starting the server: %s", err)
+		if err != nil && err != http.ErrServerClosed {
+			app.log.Printf("An error occurred while starting the server: %s", err)
 		}
 	}()
 
 	// Notify on Interrupt/kill
-	sigChan := make(chan os.Signal)
-	signal.Notify(sigChan, os.Interrupt)
-	signal.Notify(sigChan, os.Kill)
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
 	app.log.Printf("Received %s, commencing graceful shutdown", <-sigChan)
 
 	// graceful shutdown
@@ -205,6 +220,7 @@ func main() {
 	defer cancel()
 
 	if err := app.server.Shutdown(tc); err != nil {
-		app.log.Println(err)
+		log.Fatalf("Server Shutdown Failed:%+v", err)
 	}
+	log.Print("Server Exited Properly")
 }
