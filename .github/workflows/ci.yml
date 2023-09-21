@@ -7,7 +7,6 @@ jobs:
   staticcheck:
     name: Static analysis
     runs-on: ubuntu-latest
-    environment: Fly
 
     steps:
       - name: Set up Go
@@ -33,7 +32,6 @@ jobs:
   format:
     name: Formatting
     runs-on: ubuntu-latest
-    environment: Fly
 
     steps:
       - name: Set up Go
