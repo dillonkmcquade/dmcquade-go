@@ -1,5 +1,7 @@
 # dmcquade.dev
 
+![CI](https://github.com/dillonkmcquade/dmcquade-go/actions/workflows/ci.yml/badge.svg)
+
 This project is a conversion of my previous React-based portfolio site to a server side rendered site.
 
 - HTML is served to the client with a Go HTTP server
