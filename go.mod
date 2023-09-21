@@ -7,4 +7,4 @@ require (
 	github.com/go-chi/cors v1.2.1
 )
 
-require github.com/unrolled/secure v1.13.0 // indirect
+require github.com/unrolled/secure v1.13.0
