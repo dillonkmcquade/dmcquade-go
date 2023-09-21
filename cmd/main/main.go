@@ -212,7 +212,7 @@ func main() {
 
 	// Notify on Interrupt/kill
 	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGKILL)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 	app.log.Printf("Received %s, commencing graceful shutdown", <-sigChan)
 
 	// graceful shutdown
