@@ -4,7 +4,7 @@
   "description": "",
   "main": "template/index.html",
   "scripts": {
-    "build": "tailwindcss -i css/input.css -o static/output.css && esbuild --minify --bundle js/typewriter.js --outfile=static/js/index.js"
+    "build": "tailwindcss -i web/css/input.css -o web/static/output.css && esbuild --minify --bundle web/js/typewriter.js --outfile=web/static/js/index.js"
   },
   "keywords": [],
   "author": "Dillon Mcquade",
