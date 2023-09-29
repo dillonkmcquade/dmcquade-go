@@ -104,7 +104,7 @@ func (h *App) projects(rw http.ResponseWriter, r *http.Request) {
 func main() {
 	// create logger
 	l := log.New(os.Stdout, "", log.LstdFlags)
-	tmpl := template.Must(template.ParseGlob("web/template/*.html"))
+	tmpl := template.Must(template.ParseGlob("template/*.html"))
 
 	// Initialize the application
 	app := App{

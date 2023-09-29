@@ -1,4 +1,4 @@
 bin
 node_modules
 web/static/js/index.js
-web/statis/output.css
+web/static/output.css
