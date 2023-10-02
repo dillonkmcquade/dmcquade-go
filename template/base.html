@@ -9,7 +9,14 @@
       content="Dillon McQuade | Full-stack web developer from Montreal, Qc"
     />
     <link rel="icon" type="image/png" href="/static/favicon.ico" />
-    <link href="/static/output.css" rel="stylesheet" />
+    <link
+      rel="preload"
+      href="/static/images/banner.jpg"
+      as="image"
+      type="image/jpg"
+      blocking="render"
+    />
+    <link href="/static/output.css" rel="stylesheet" blocking="render" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

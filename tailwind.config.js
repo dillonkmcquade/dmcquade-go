@@ -7,9 +7,6 @@ module.exports = {
         hero: "90vh",
         hero_mobile: "calc(100vh + 300px)",
       },
-      backgroundImage: {
-        hero: "url('/static/images/banner.jpg')",
-      },
       backgroundColor: {
         head: "rgba(0, 0, 0, 0.4)",
         header: "rgba(0, 0, 0, 0.7)",

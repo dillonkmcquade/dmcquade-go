@@ -1,14 +1,4 @@
 {{template "base"}}
-<style>
-  div.project-details-image {
-    background-image: url("{{ .Image }}");
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 500px;
-    width: 100%;
-  }
-</style>
 <main class="container relative mx-auto my-0 flex flex-col px-4">
   <a
     href="/"
@@ -18,22 +8,20 @@
     >Back</a
   >
   <h1 class="mx-auto mb-3 text-4xl">{{ .Title }}</h1>
-  <div
-    class="project-details-image"
-    alt="Photo of the stock detail page of Marketsim"
-  ></div>
+  <div class="container">
+    <img
+      class="m-auto sm:h-64 md:h-96 lg:h-[500px]"
+      src="{{ .Image }}"
+      alt="Photo of the stock detail page of Marketsim"
+    />
+  </div>
 
-  <!-- Icons  -->
   <section class="my-4 min-h-[5vh]">
     <div class="flex flex-col">
-      <div class="w-full">
+      <div class="container mx-auto md:max-w-5xl">
         {{ range .Sections}}
-        <h1 class="my-4 w-full text-center text-3xl">{{ .Title }}</h1>
-        <p
-          class="mx-auto my-2 flex max-w-full justify-center leading-6 tracking-wide md:max-w-5xl"
-        >
-          {{ .Text }}
-        </p>
+        <h1 class="my-4 text-center text-3xl">{{ .Title }}</h1>
+        <p class="my-2 flex leading-6 tracking-wide">{{ .Text }}</p>
         {{end}}
       </div>
     </div>

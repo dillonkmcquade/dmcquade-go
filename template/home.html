@@ -3,17 +3,18 @@
   class="container mx-auto mb-0 ml-auto mr-auto mt-4 flex h-full flex-col items-center p-4 text-xs"
 >
   <!-- Hero -->
-  <div
-    class="absolute -top-[100px] -z-10 h-hero_mobile w-screen bg-hero bg-cover bg-center md:h-hero"
-  ></div>
+  <img
+    class="absolute -top-[100px] -z-10 h-hero_mobile w-screen object-cover md:h-hero"
+    src="/static/images/banner.jpg"
+  />
 
   <!-- About Section -->
   <section
-    class="flex w-full flex-col items-center justify-evenly bg-head text-nord4 md:min-h-[40vh] md:flex-row"
+    class="container flex flex-col items-center justify-evenly bg-head text-nord4 md:min-h-[40vh] md:flex-row"
   >
     <div class="flex flex-col items-center">
       <img
-        class="mx-0 my-4 h-72 rounded sm:h-[300px]"
+        class="mx-0 my-4 h-72 rounded object-cover sm:h-[300px]"
         src="/static/images/black-and-white-headshot.jpg"
         alt="picture of me"
       />
@@ -43,13 +44,18 @@
 
   <!-- Projects -->
   <h1 class="mx-0 my-5 text-2xl font-bold text-nord8">Projects</h1>
-  <section class="mx-auto my-0 flex w-full flex-wrap justify-center">
+  <section class="container mx-auto flex flex-wrap justify-center">
     {{range .Projects}}
     <article
       class="mx-0 my-4 w-full rounded-md bg-white p-4 shadow-project_card sm:m-4 sm:max-w-[350px]"
     >
-      <div class="flex h-80 justify-center overflow-hidden">
-        <img src="{{ .Src }}" alt="project thumbnail" />
+      <div class="container overflow-hidden">
+        <img
+          src="{{ .Src }}"
+          alt="project thumbnail"
+          loading="lazy"
+          class="xs:w-full m-auto sm:h-full lg:h-64"
+        />
       </div>
       <div class="flex flex-col font-bold">
         <div class="text-2xl">
