@@ -8,6 +8,6 @@ ENV PNPM_HOME="/root/.local/share/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN npm install --global pnpm
 RUN cd web && pnpm install && pnpm build
-RUN go build -v -o /usr/local/bin/dmcquade-go ./...
+RUN go build -v -o /usr/local/bin/dmcquade-go cmd/main/main.go
 EXPOSE 8080
 ENTRYPOINT ["/usr/local/bin/dmcquade-go"]
