@@ -1,14 +1,13 @@
-package controllers
+package app
 
 import (
 	"net/http"
 	"strconv"
 
-	"github.com/dillonkmcquade/dmcquade-go/internal/app"
 	"github.com/go-chi/chi/v5"
 )
 
-func ProjectsPage(a *app.App) http.HandlerFunc {
+func projectsPage(a *App) http.HandlerFunc {
 	return func(rw http.ResponseWriter, r *http.Request) {
 		id := chi.URLParam(r, "id")
 		if id == "" {

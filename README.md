@@ -11,4 +11,7 @@ This project is a conversion of my previous React-based portfolio site to a serv
 - Tailwind
 - HTMX
 - esbuild
-- ~15 lines of JS
+
+## License
+
+[MIT](./LICENSE) License

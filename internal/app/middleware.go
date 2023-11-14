@@ -6,7 +6,8 @@ import (
 	"github.com/unrolled/secure"
 )
 
-func (h *App) middleware() {
+// Encapsulation of middlewares. Default location for extending middleware list
+func (h *App) loadMiddleware() {
 	if h.Router == nil {
 		panic("router not initialized")
 	}

@@ -10,23 +10,13 @@ import (
 	"time"
 
 	"github.com/dillonkmcquade/dmcquade-go/internal/app"
-	"github.com/dillonkmcquade/dmcquade-go/internal/controllers"
 )
 
 func main() {
 	// Initialize the application
 	app := app.NewApp()
-
 	app.Bootstrap()
-
 	app.ServeStatic()
-
-	// Routes
-	app.Router.Get("/", controllers.Index(app))
-	app.Router.Get("/project/{id}", controllers.ProjectsPage(app))
-
-	// Catch 404
-	app.Router.NotFound(app.NotFound)
 
 	server := &http.Server{
 		Addr:         ":8080",

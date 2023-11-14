@@ -17,12 +17,36 @@ type App struct {
 	Data   AppData
 }
 
+func NewApp() *App {
+	return &App{
+		Log:    log.New(os.Stdout, "", log.LstdFlags),
+		Router: chi.NewRouter(),
+		Data: AppData{
+			// ProjectDetails
+			// Projects
+			Skills: [10]string{
+				"Go",
+				"Typescript",
+				"HTML",
+				"CSS",
+				"MongoDB",
+				"Node.js",
+				"Linux",
+				"React",
+				"Docker",
+				"PostgreSQL",
+			},
+		},
+	}
+}
+
 // serve static assets like css, images, JS, etc.
 func (h *App) ServeStatic() {
 	fs := http.FileServer(http.Dir("web/static/"))
 	h.Router.Handle("/static/*", http.StripPrefix("/static/", fs))
 }
 
+// Default 404 not found response
 func (h *App) NotFound(rw http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.New("404").Parse(`<h1 style="text-align: center;">404 Not found</h1>`)
 	if err != nil {
@@ -35,6 +59,7 @@ func (h *App) NotFound(rw http.ResponseWriter, r *http.Request) {
 	}
 }
 
+// Parse templates and json data
 func (h *App) loadData() {
 	// load data into struct
 	b, err := os.ReadFile("internal/data/data.json")
@@ -62,30 +87,7 @@ func (h *App) loadData() {
 func (h *App) Bootstrap() {
 	h.loadData()
 
-	h.Log = log.New(os.Stdout, "", log.LstdFlags)
+	h.loadMiddleware()
 
-	h.Router = chi.NewRouter()
-
-	h.middleware()
-}
-
-func NewApp() *App {
-	return &App{
-		Data: AppData{
-			// ProjectDetails
-			// Projects
-			Skills: [10]string{
-				"Go",
-				"Typescript",
-				"HTML",
-				"CSS",
-				"MongoDB",
-				"Node.js",
-				"Linux",
-				"React",
-				"Docker",
-				"PostgreSQL",
-			},
-		},
-	}
+	h.loadRoutes()
 }
