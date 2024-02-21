@@ -1,6 +1,11 @@
 # flyctl launch added from .gitignore
+**/.git
+**/.github
 **/bin
 fly.toml
-web/node_modules
-web/static/js/index.js
+README.md
+LICENSE
+Dockerfile
+**/.gitignore
+node_modules
 web/static/output.css
