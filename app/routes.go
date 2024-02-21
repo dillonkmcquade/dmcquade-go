@@ -1,16 +1,21 @@
 package app
 
 import (
+	"embed"
+	"html/template"
+	"io/fs"
+	"log"
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	"github.com/unrolled/secure"
 )
 
-// Encapsulation of middlewares. Default location for extending middleware list
-func (h *App) loadMiddleware() {
-	if h.Router == nil {
-		panic("router not initialized")
-	}
+func Router(tmpl *template.Template, static embed.FS, data *AppData) *chi.Mux {
+	app := chi.NewRouter()
+
 	secureMiddleware := secure.New(secure.Options{
 		ContentSecurityPolicy: `
             default-src 'self' data:;
@@ -32,15 +37,31 @@ func (h *App) loadMiddleware() {
 	})
 
 	// middleware
-	h.Router.Use(cors.Handler(cors.Options{
+	app.Use(cors.Handler(cors.Options{
 		AllowedOrigins:   []string{"https://*", "http://*"},
 		AllowedMethods:   []string{"GET", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Content-Type"},
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
-	h.Router.Use(middleware.Logger)
-	h.Router.Use(middleware.Recoverer)
-	h.Router.Use(secureMiddleware.Handler)
-	h.Router.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
+	app.Use(middleware.Logger)
+	app.Use(middleware.Recoverer)
+	app.Use(secureMiddleware.Handler)
+	app.Use(middleware.Compress(5, "text/html", "text/css", "text/plain", "text/javascript", "image/vnd.microsoft.icon", "image/png", "image/jpeg"))
+
+	// Serve static files
+	sub, err := fs.Sub(static, "web/static")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fs := http.FileServer(http.FS(sub))
+	app.Handle("/static/*", http.StripPrefix("/static/", fs))
+
+	// Routes
+	app.Get("/", index(tmpl, data))
+
+	// 404
+	app.NotFound(notFound)
+
+	return app
 }

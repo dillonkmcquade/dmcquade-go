@@ -22,20 +22,13 @@
     <section class="md:max-w-1/3 w-full max-w-max text-center md:w-1/3">
       <div>
         <h1 class="mx-0 my-5 text-2xl font-bold text-nord8">Dillon McQuade</h1>
-        <h1 class="mx-0 my-5 text-xl font-bold text-nord8" id="typewriter"></h1>
       </div>
 
       <h1 class="mx-0 my-5 text-xl font-bold text-nord8">About me</h1>
       <p class="w-full p-4 indent-4 text-lg lg:max-w-5xl">
-        I'm a life-long learner, adventurer, husband, and lawn nerd. I'm
-        intrigued by software and especially developer tools and command-line
-        applications.
-      </p>
-      <p class="w-full p-4 indent-4 text-lg lg:max-w-5xl">
-        I am motivated by and enjoy backend development. I have used Typescript
-        for most of my projects, and right now i'm learning more about the Go
-        programming language. This site was written in Go using the
-        html/template package and only 15 lines of JavaScript!
+        I enjoy working on challenging software projects and tinkering on linux
+        machines and servers. My general interests are programming, open source
+        software, linux, lawn maintenance, bicycling, TV/Movies, wine and food.
       </p>
     </section>
   </section>
@@ -116,15 +109,7 @@
             </a>
             {{ end}}
           </div>
-          {{ if .NoInfo }}
-          <a
-            class="font-bold leading-6 text-black underline-offset-4 hover:text-nord10"
-            hx-boost="true"
-            href="/project/{{ .Id }}"
-            aria-label="View project details"
-            >Project Details</a
-          >
-          {{ end}}
+          {{ if .NoInfo }} {{ end}}
         </div>
       </div>
     </article>
@@ -140,9 +125,4 @@
     {{end}}
   </section>
 </main>
-<script
-  nonce="dmcquade-go"
-  type="text/javascript"
-  src="/static/js/index.js"
-></script>
 {{ template "footer" }}

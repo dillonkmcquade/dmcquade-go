@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "name": "MarketSim",
+    "github": "https://www.github.com/dillonkmcquade/sm_sim",
+    "url": "",
+    "description": "A stock market simulator written in Typescript, React, Express, MongoDB, and Redis. Capstone project for Concordia University Diploma in Full Stack Web Development",
+    "src": "/static/images/stockDetails.png",
+    "youtube": "https://youtu.be/VJBgQ__4Mug",
+    "noInfo": true
+  },
+  {
+    "id": 2,
+    "name": "MarketSim V2",
+    "github": "https://www.github.com/dillonkmcquade/sm_sim-v2",
+    "description": "Fork of MarketSim, rewritten with a PostgreSQL database & the NestJS backend framework",
+    "src": "/static/images/stockDetails.png",
+    "url": "",
+    "youtube": "",
+    "noInfo": false
+  },
+  {
+    "id": 3,
+    "name": "Go-fullstack",
+    "github": "https://www.github.com/dillonkmcquade/go-fullstack",
+    "description": "A project template with sensible defaults for creating REST api's or full stack projects in Go. Includes air for hot reloads, docker-compose support for PostgreSQL, Go-Chi for HTTP routing, and HTMX for interactive frontends, and a Makefile to bring it all together",
+    "src": "/static/images/gopher.png",
+    "youtube": "",
+    "url": "",
+    "noInfo": true
+  },
+  {
+    "id": 4,
+    "name": "Price comparison engine",
+    "github": "https://www.github.com/dillonkmcquade/price-comparison",
+    "description": "A web scraping project for comparing grocery prices between multiple stores. Created with Go, SQLite and React",
+    "src": "/static/images/gopher.png",
+    "youtube": "",
+    "url": "",
+    "noInfo": true
+  },
+  {
+    "id": 5,
+    "name": "Wearables",
+    "github": "https://www.github.com/dillonkmcquade/wearables",
+    "description": "A full stack e-commerce site created with React, Express, and MongoDB. Completed in a group with 4 other contributors",
+    "src": "/static/images/wearables_home.png",
+    "url": "",
+    "youtube": "",
+    "noInfo": true
+  },
+  {
+    "id": 6,
+    "name": "Asteroid Blaster",
+    "github": "https://www.github.com/dillonkmcquade/asteroid_blaster",
+    "description": "A cross between tetris and asteroids, written in JavaScript",
+    "src": "/static/images/project0.png",
+    "youtube": "",
+    "url": "",
+    "noInfo": true
+  }
+]
